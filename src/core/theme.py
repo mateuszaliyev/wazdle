@@ -12,6 +12,9 @@ class _Colors:
     green400 = "#6aaa64"
     green500 = "#538d4e"
 
+    yellow500 = "#c9b458"
+    yellow600 = "#b59f3b"
+
     white = "#ffffff"
 
 
@@ -21,9 +24,12 @@ class _Fonts:
 
 
 class _ThemeColors:
+    absent = _Colors.gray700
     background = _Colors.gray1000
     border = _Colors.gray700
+    correct = _Colors.green500
     foreground = _Colors.white
+    present = _Colors.yellow600
 
 
 class _ThemeFonts:

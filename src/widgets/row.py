@@ -11,7 +11,7 @@ class Row(QWidget):
         super().__init__()
 
         self.currentTile = 0
-        self.handleSubmit = lambda: None
+        self.handleSubmit = None
 
         self.tiles = [Tile("") for i in range(Settings.letters)]
 
@@ -31,7 +31,14 @@ class Row(QWidget):
             return
 
         if self.currentTile == Settings.letters and key == Qt.Key.Key_Return.value:
-            self.handleSubmit()
+            guess = ""
+
+            for tile in self.tiles:
+                guess += tile.text()
+
+            if self.handleSubmit is not None:
+                self.handleSubmit(guess)
+
             return
 
         if self.currentTile < Settings.letters and (key > 64 and key < 91 or key > 96 and key < 123):
