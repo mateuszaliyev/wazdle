@@ -42,12 +42,27 @@ class Game(QWidget):
         self.rows[self.currentRow].onKeyPress(key)
 
     def reveal(self, guess):
+        letterCount = {}
+
+        for letter in self.word:
+            if letter in letterCount:
+                letterCount[letter] += 1
+                continue
+
+            letterCount[letter] = 1
+
         for index, tile in enumerate(self.rows[self.currentRow].tiles):
             if guess[index] == self.word[index]:
                 tile.setCorrect()
+                letterCount[guess[index]] -= 1
+
+        for index, tile in enumerate(self.rows[self.currentRow].tiles):
+            if guess[index] == self.word[index]:
                 continue
-            elif guess[index] in self.word:
+
+            if guess[index] in self.word and letterCount[guess[index]] > 0:
                 tile.setPresent()
+                letterCount[guess[index]] -= 1
                 continue
 
             tile.setAbsent()
