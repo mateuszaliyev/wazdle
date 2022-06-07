@@ -1,3 +1,6 @@
+from json import loads
+from random import choice
+
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout, QWidget
 
@@ -12,8 +15,9 @@ class Game(QWidget):
         super().__init__()
 
         self.currentRow = 0
+        self.gameOver = False
         self.rows = [Row() for i in range(Settings.tries)]
-        self.word = self.getNewWord(Settings.letters)
+        self.word = self.getNewWord()
 
         self.board = QWidget()
         boardLayout = QVBoxLayout()
@@ -30,15 +34,44 @@ class Game(QWidget):
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(layout)
 
-    def getNewWord(self, letters):
-        return "PYTON"
+    def getNewWord(self):
+        dataFile = open("src\\data\\en.json", "r")
+        data = loads(dataFile.read())
+
+        return choice(data[f"{Settings.letters}"]).upper()
+
+    def handleGameOver(self, success):
+        self.gameOver = True
+
+        print("Gratulacje" if success else f"Hasło: {self.word}")
+
+    def handleNewGame(self):
+        self.currentRow = 0
+        self.word = self.getNewWord()
+
+        for row in self.rows:
+            row.reset()
+
+        self.gameOver = False
 
     def handleSubmit(self, guess):
         self.reveal(guess)
 
-        self.currentRow += 1
+        if guess == self.word:
+            self.handleGameOver(True)
+            return
+
+        if self.currentRow < Settings.tries - 1:
+            self.currentRow += 1
+            return
+
+        self.handleGameOver(False)
 
     def onKeyPress(self, key):
+        if self.gameOver and key == Qt.Key.Key_Return.value:
+            self.handleNewGame()
+            return
+
         self.rows[self.currentRow].onKeyPress(key)
 
     def reveal(self, guess):

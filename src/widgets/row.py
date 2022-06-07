@@ -48,3 +48,10 @@ class Row(QWidget):
 
     def onSubmit(self, callback):
         self.handleSubmit = callback
+
+    def reset(self):
+        self.currentTile = 0
+
+        for tile in self.tiles:
+            tile.setDefault()
+            tile.setText("")
