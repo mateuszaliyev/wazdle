@@ -17,6 +17,7 @@ class Game(QWidget):
         self.currentRow = 0
         self.gameOver = False
         self.rows = [Row() for i in range(Settings.tries)]
+        self.toast = None
         self.word = self.getNewWord()
 
         self.board = QWidget()
@@ -43,9 +44,15 @@ class Game(QWidget):
     def handleGameOver(self, success):
         self.gameOver = True
 
-        print("Gratulacje" if success else f"Hasło: {self.word}")
+        if self.toast != None and success == False:
+            self.toast.change(self.word)
+            self.toast.show()
 
     def handleNewGame(self):
+        if self.toast != None:
+            self.toast.hide()
+            self.toast.change("")
+
         self.currentRow = 0
         self.word = self.getNewWord()
 
@@ -99,3 +106,6 @@ class Game(QWidget):
                 continue
 
             tile.setAbsent()
+
+    def setToast(self, toast):
+        self.toast = toast

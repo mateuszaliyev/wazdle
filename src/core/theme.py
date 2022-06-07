@@ -29,6 +29,8 @@ class _ThemeColors:
     correct = _Colors.green500
     foreground = _Colors.gray300
     present = _Colors.yellow600
+    toastBackground = _Colors.gray300
+    toastForeground = _Colors.gray1000
 
 
 class _ThemeFonts:
