@@ -2,6 +2,7 @@ from PyQt6.QtGui import QFont
 
 
 class _Colors:
+    gray300 = "#d7dadc"
     gray500 = "#818384"
     gray600 = "#565758"
     gray700 = "#3a3a3c"
@@ -15,8 +16,6 @@ class _Colors:
     yellow500 = "#c9b458"
     yellow600 = "#b59f3b"
 
-    white = "#ffffff"
-
 
 class _Fonts:
     clearSans = "Clear Sans"
@@ -28,7 +27,7 @@ class _ThemeColors:
     background = _Colors.gray1000
     border = _Colors.gray700
     correct = _Colors.green500
-    foreground = _Colors.white
+    foreground = _Colors.gray300
     present = _Colors.yellow600
 
 
