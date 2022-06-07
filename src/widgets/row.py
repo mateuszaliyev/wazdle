@@ -36,7 +36,7 @@ class Row(QWidget):
             for tile in self.tiles:
                 guess += tile.text()
 
-            if self.handleSubmit is not None:
+            if self.handleSubmit != None:
                 self.handleSubmit(guess)
 
             return
