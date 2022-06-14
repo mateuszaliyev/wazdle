@@ -18,6 +18,9 @@ class Game(QWidget):
         self.gameOver = False
         self.rows = [Row() for i in range(Settings.tries)]
         self.toast = None
+
+        self.words = self.getWords(Settings.language)
+
         self.word = self.getNewWord()
 
         self.board = QWidget()
@@ -36,10 +39,14 @@ class Game(QWidget):
         self.setLayout(layout)
 
     def getNewWord(self):
-        dataFile = open("src\\data\\en.json", "r")
-        data = loads(dataFile.read())
+        return choice(self.words[f"{Settings.letters}"][:1000]).upper()
 
-        return choice(data[f"{Settings.letters}"]).upper()
+    def getWords(self, language):
+        dataFile = open(f"src\\data\\{Settings.language}.json", "r")
+        data = loads(dataFile.read())
+        dataFile.close()
+
+        return data
 
     def handleGameOver(self, success):
         self.gameOver = True
@@ -62,6 +69,19 @@ class Game(QWidget):
         self.gameOver = False
 
     def handleSubmit(self, guess):
+        isInWordList = False
+
+        for word in self.words[f"{Settings.letters}"]:
+            if guess == word.upper():
+                isInWordList = True
+
+        if not isInWordList:
+            self.toast.change("Not in word list")
+            self.toast.show()
+            return
+
+        self.toast.hide()
+        self.toast.change("")
         self.reveal(guess)
 
         if guess == self.word:
@@ -78,6 +98,10 @@ class Game(QWidget):
         if self.gameOver and key == Qt.Key.Key_Return.value:
             self.handleNewGame()
             return
+
+        if key == Qt.Key.Key_Backspace.value:
+            self.toast.hide()
+            self.toast.change("")
 
         self.rows[self.currentRow].onKeyPress(key)
 
